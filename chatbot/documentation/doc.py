@@ -17,7 +17,7 @@ SUM_tokenizer = PreTrainedTokenizerFast.from_pretrained("ainize/kobart-news")
 model = BartForConditionalGeneration.from_pretrained("ainize/kobart-news")
 
 
-directory_path = '/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/raw_data/00_harvard.json'
+directory_path = '/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/raw_data/before_doc.txt'
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=openai_api_key)
@@ -47,39 +47,38 @@ def chunker(context: str):
 
 
 
-def generate_documentation(splitted_content):
+def generate_documentation(texts):
     print("=====================GENERATE DOCUMENT FUNCTION=====================")
     # Construct the prompt for the API
     
-    prompt = (
-        "This is STT data of a lecture\n"
-        "Document it in a form that does not seem like human speech and DO NOT summarize!\n" 
-        "The documented form should be at least 1000 characters, removing the characteristics of direct spoken language, and restructure it into a more formal and organized format of text.\n"
-        "Ensure the text avoids vague references such as 'it', 'this', or 'etc.', and instead directly states the subject matter."
-        "And make sure to send it in the form of one sentence of text!!!\n"
-        f"Provided text:\n{splitted_content}\n"
-    )
+    sys_prompt='''1. A machine that organizes documents into paragraphs with less than 384 characters each, maintaining a timestamp for each paragraph.
+2. Respond in English.
+3.Ensure the text avoids vague references such as 'it', 'this', or 'etc.', and instead directly states the subject matter."
+4. Output format: [{"timestamp": "01:02:12", "paragraph": "part of summary"}]'''
 
     # Request the OpenAI API to process the text
     try:
         response = client.chat.completions.create(
             model="gpt-4-turbo-preview",
-            messages=[{"role": "system", "content": "You are a machine that only returns the given test of the task and no adittional comments or text. "}, 
-                      {"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": sys_prompt}, 
+                {"role": "user", "content": texts,}]
+            
         )
         print(f"\nGPT - ATTEMPT #1 RESPONSE : {response}\n")
         
         raw_content = response.choices[0].message.content.strip()
         print(f"\nGPT = ATTEMPT #1 RAW CONTENT : {raw_content}")
+    
         
         # replace any new lines
-        cleaned_text = raw_content.replace('\n', ' ')
+        #cleaned_text = raw_content.replace('\n', ' ')
 
-        splitted_text = chunker(cleaned_text)
+        #splitted_text = chunker(cleaned_text)
         
-        print(f"\nSPLITTED CONTENT : {splitted_text}\n")
+        #print(f"\cleaned_text CONTENT : {cleaned_text}\n")
         
-        return splitted_text
+        return raw_content
     
     except Exception as e:
         print(f'Failed to process response with GPT: {str(e)}')
@@ -98,39 +97,24 @@ def generate_id(item):
 
 def process_files():
     print("=====================PROCESS FILES FUNCTION=====================")
-    with open('/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/raw_data/00_harvard.json', 'r', encoding='utf-8') as file:
-        data = json.load(file)
+    with open('/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/raw_data/before_doc.txt', 'r', encoding='utf-8') as file:
+        texts = file.read()
+        print(texts)
         final_result = {'data': []} 
 
-        # Process each entry in the "data" list
-        for item in data['data']:
-            original_text = item['text']
-
-            generated_content = generate_documentation(original_text)
+        
+    generated_content = generate_documentation(texts)
             
-            for doc in generated_content:
-                print(f"\n\nseparate final doc?: {doc}\n\n")
-                unique_id = generate_id(item)
-                print(f"\n\nseparate final id?: {unique_id}\n\n")
-                object = {
-                    'id' : unique_id,
-                    'text': doc,
-                    'timestamp': item['timestamp']
-                    }
-                final_result['data'].append(object)  # Append the new object to the list
-
-    print(f"\n Final result : {final_result}")
-            
-    return final_result
+    return generated_content
 
 # Usage
 all_documentations = process_files()
 
 # Specify your output file path
-output_file_path = '/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/completed_data/00_harvard.json'
+output_file_path = '/Users/babyybiss/dev/projects/codeClimX_chatbot/chatbot/data/completed_data/after_doc.json'
 
 # Save the documentation_object to a JSON file
 with open(output_file_path, 'w', encoding='utf-8') as f:
-    json.dump(all_documentations, f, ensure_ascii=False, indent=4)
+    f.write(all_documentations)
 
 print(f"Documentation saved to {output_file_path}")

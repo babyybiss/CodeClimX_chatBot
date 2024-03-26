@@ -1,7 +1,7 @@
 import os
 import base64
 import torch
-from pinecone import Pinecone
+from pinecone import Pinecone, ServerlessSpec
 from transformers import AutoModelForMaskedLM, AutoTokenizer
 from langchain_pinecone import PineconeVectorStore
 from langchain.indexes.vectorstore import VectorStoreIndexWrapper
@@ -9,7 +9,6 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from splade.models.transformer_rep import Splade
 from pinecone_text.sparse import BM25Encoder
 from dotenv import load_dotenv
-from process_question.process_response import generate_result
 from konlpy.tag import Okt
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
@@ -24,7 +23,7 @@ def tokenizer(text):
 from sentence_transformers import SentenceTransformer
 device = 'cpu'
 dense_model = SentenceTransformer(
-    'msmarco-bert-base-dot-v5',
+    'distiluse-base-multilingual-cased-v1',
     device=device
 )
 
@@ -38,8 +37,38 @@ PINECONE_INDEX_NAME = "curriculum"
 # Initialize Pinecone
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 
-# Connect to the Pinecone index
-pinecone_index = pc.Index(PINECONE_INDEX_NAME)
+# Define the vector dimension based on your model's output (e.g., 384 for 'all-MiniLM-L6-v2')
+vector_dimension = 512
+# The name of your Pinecone index
+index_name = 'curriculum'.lower()  # Ensure the name is lowercase
+
+# Create an index if it does not exist
+if index_name not in pc.list_indexes().names():
+    pc.create_index(
+        name=index_name,
+        dimension=vector_dimension,
+        metric='dotproduct', 
+        spec=ServerlessSpec(
+            cloud='gcp',
+            region='us-central1'
+        )
+    )
+    
+# Extract the host if it's available
+index_host = None
+try:
+    index_description = pc.describe_index(name=index_name)
+    print(f"\nindex_description : \n{index_description}")
+    index_host = index_description['host'] 
+    print(f"\n index host : \n{index_host}\n")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+if index_host is None:
+    raise Exception("Unable to retrieve index 'host' information.")
+
+# Initialize Pinecone Index with the host
+index = pc.Index(name=index_name, host=index_host)
 
 # Load dense model
 model_name = "intfloat/e5-large-v2"
@@ -117,7 +146,7 @@ def hybrid_search(query, top_k=4, alpha=float):
     hdense, hsparse = hybrid_scale(d_embedding, sparse, alpha=0.5)
      
     # Perform the search with scaled vectors
-    results = pinecone_index.query(
+    results = index.query(
         vector=hdense,  # Use the scaled dense vector
         sparse_vector=hsparse,  # Use the scaled sparse vector
         top_k=top_k,
