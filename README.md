@@ -6,7 +6,7 @@
 
 <br/>
 
-## 📝 작품소개
+# 📝 작품소개
 
 AI를 활용하여 개발 관련 해외 대학 강의에 한글 자막을 단 동영상을 제공하여,
 강의 내용 기반 RAG 챗봇, 강의 내용 기반 생성형 AI퀴즈, 그리고 커뮤니티를 제공하는 모바일 어플리케이션입니다.
@@ -23,52 +23,58 @@ YOUTUBE 라는 대형 플랫폼에서는 빠르게 변해가는 IT 직군의 트
 
 <br/>
 
-## 🌁 사용 기술
+# 🌁 사용 기술
 Flutter를 기반으로 한 프론트엔드 어플리케이션과 Python을 사용하는 백엔드 시스템을 통합한 구조입니다.
 백엔드에서는 FastAPI를 통한 통신과 PyTorch 및 OpenAI를 활용한 AI 모델 배포를 지원합니다.
 또한, 음성 인식(STT) 및 자연어 처리 기능에는 Splade와 SentenceTransformers와 같은 임베딩 모델을 사용하여 고도화된 처리 능력을 제공합니다.
 
 <br/>
 
-## 🎞 Demo
-[리뉴얼 전 리드미 시연영상보기](https://www.youtube.com/watch?v=X-rooURijag)  
-[리뉴얼 후 리드미 시연영상보기](https://www.youtube.com/watch?v=o1WqMeW8qFM&ab_channel=LINKER)
-
-<br/>
-
-## ⭐ 주요 기능
-- **강의 내용 번역** : 번역 적용 된 강의 영상 제공, 영상 내용 기반 검색
-
-
-
-- **RAG 챗봇** : 강의 내용 중 모르는 건 RAG 기반 챗봇에게 질문 
-
-
-
-- **퀴즈** : 주관식, 객관식, 피드백
-
-
-
-- **커뮤니티** : 강의 내용 외의 질문 AI 자동 답변, 사용자 커뮤니티 형성
-
+# 🎞 Demo
+https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/bf9f9596-d2a6-47c8-ab7d-dc98ed7c1d9a
 
 
 
 <br/>
 
-## 🔨 프로젝트 구조
-![아키텍처](https://firebasestorage.googleapis.com/v0/b/fir-readme-storage.appspot.com/o/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202022-06-02%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2011.19.37.png?alt=media&token=79093ff3-9c0a-40fd-8721-f0fa54625694)
+# ⭐ 주요 기능
+## 강의 내용 번역 : 번역 적용 된 강의 영상 제공, 영상 내용 기반 검색
+<img width="333" alt="Screenshot 2024-03-28 at 17 23 07" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/5b7e0736-5f69-406c-ac32-7804907c415f">
+<img width="333" alt="Screenshot 2024-03-28 at 17 23 36" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/27adc7ea-6e93-4fd8-80c0-51fa1c63626b">
+<br/>
+<br/>
+
+## RAG 챗봇 : 강의 내용 중 모르는 건 RAG 기반 챗봇에게 질문 
+<img width="333" alt="Screenshot 2024-03-28 at 17 28 16" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/8b198e6a-6dc4-4726-a58e-45def9f1ee65">
+<img width="333" alt="Screenshot 2024-03-28 at 17 28 24" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/2abfa48d-e26c-4a41-9ac1-9213a7aae0ab">
+<br/><br/>
 
 
-<img width="1811" alt="기능처리도" src="https://user-images.githubusercontent.com/72256238/195097998-4d672aa7-3ad3-4d62-9eee-1c4943c587df.png">
+## 퀴즈 : 주관식, 객관식, 피드백
+<img width="334" alt="Screenshot 2024-03-28 at 17 28 34" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/c81ed66e-d6fc-4d8c-8436-7b565b3bb111">
+<img width="335" alt="Screenshot 2024-03-28 at 17 32 07" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/12f437e9-ff72-459d-bad3-dbcb9d3846a9">
+<img width="333" alt="Screenshot 2024-03-28 at 17 31 57" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/d20ef1a2-18ca-4cd4-8706-1e494f37a914">
+<img width="336" alt="Screenshot 2024-03-28 at 17 29 07" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/aa33dfc6-57ac-4d47-80f3-0ebd7332e0c7">
+<br/><br/>
+
+## 커뮤니티 : 강의 내용 외의 질문 AI 자동 답변, 사용자 커뮤니티 형성
+<img width="333" alt="Screenshot 2024-03-28 at 17 29 28" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/9c1219a2-5c18-4392-a641-133365931e6c">
+<img width="331" alt="Screenshot 2024-03-28 at 17 29 40" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/774d7b6e-9970-4164-8600-53cd60082851">
+
 
 <br/>
 
-## 🔧 Stack
+# 🔨 프로젝트 구조
+<img width="1811" alt="Screenshot 2024-03-28 at 17 18 50" src="https://github.com/babyybiss/CodeClimX_chatBot/assets/131161981/095b3225-5cae-4dd1-aeb2-b90e9aa52dc0">
+
+
+<br/>
+
+# 🔧 Stack
 
 **Frontend(Ios, Android)**
 - **Language** : Dart
-- **Library & Framework** : Flutter
+- **Library & Framework** : Flutter
 <br />
 
 **Backend**
