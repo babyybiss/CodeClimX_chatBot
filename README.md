@@ -4,7 +4,7 @@
 <h1 align="middle">CodeClimX</h1>
 <h3 align="middle">명강의 학습을 위한 AI 기반의 학습 어플리케이션</h3>
 
-<p align="middle">프론트 서버 레포지토리 : 
+<p align="middle">🔎 프론트 서버 레포지토리 : 
 https://github.com/babyybiss/CodeClimX</p>
 
 <br/>
